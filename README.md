@@ -12,9 +12,18 @@ Skilled data engineer that you are, you have already extracted a dataset on hous
 
 You want to have an idea of which post codes are better suited for investment, and from those, in which it's more profitable to rent long term, or through Airbnb.
 
-## Deliverables
+## Product Development
 
-At a minimum, you will build a (set of) data pipeline(s) that:
+If you are applying for a non-engineering position:
+
+- Create a conceptual design of how the implementation looks like (either components or process)
+- Create a business case
+- Create a roadmap with milestones how you would deliver this implementation with a team of engineers
+- Create a storyline based on the above input to convince the customer to invest
+
+## Engineering Deliverables
+
+If you are applying for an engineering position, at a minimum, you will build a (set of) data pipeline(s) that:
 
 - Ingest the rental data scraped from Kamernet (data/rentals.json)
 - Ingest the data from Airbnb (data/airbnb.csv)
