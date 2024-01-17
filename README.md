@@ -29,7 +29,7 @@ If you are applying for an engineering position, at a minimum, you will build a 
 - Ingest the data from Airbnb (data/airbnb.csv)
 - Clean both datasets
 - Follow the Databricks Medallion Architecture
-- Calculate the potential average revenue per house, per postcode (rental and Airbnb), as derived from the data
+- Calculate the potential average revenue per house, per postcode (rental and Airbnb), as derived from the data -> DONE
 
 It is expected that you deliver as part of the project:
 
@@ -50,11 +50,11 @@ Following are a number of stretch goals of increasing difficulty that willl give
 
 - [ ] Build a CI-CD pipeline that deploys your data pipeline
 - [ ] Run tests in your CICD pipeline
-- [ ] Use pre-commit hooks to ensure code quality
+- [X] Use pre-commit hooks to ensure code quality
 
 #### Level 2 / Artist
 
-- [ ] Build a Databricks visualization or dashboard showing the potential revenue per postcode (rental and Airbnb)
+- [X] Build a Databricks visualization or dashboard showing the potential revenue per postcode (rental and Airbnb)
 - [ ] Create diagrams of the data flows and of your CICD pipeline
 
 #### Level 3 / Future-Proof
@@ -72,7 +72,7 @@ Following are a number of stretch goals of increasing difficulty that willl give
 
 - [ ] Use the `/data/geo/post_codes.geojson` geographic dataset to enrich the Airbnb data with missing postcodes,
 - [ ] - or - Query an external API such as [public.opendatasoft.com](https://public.opendatasoft.com/explore/dataset/georef-netherlands-postcode-pc4/api/) to fill in the missing postcodes using a UDF
-- [ ] Use the `/data/geo/amsterdam_areas.geojson` geographic dataset for your visualization
+- [X] Use the `/data/geo/amsterdam_areas.geojson` geographic dataset for your visualization
 
 ## Review
 
