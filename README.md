@@ -61,11 +61,11 @@ Following are a number of stretch goals of increasing difficulty that will give 
 - [ ] Build a visualization or dashboard showing the potential revenue per postcode (rental and Airbnb)
 - [ ] Create diagrams of the data flows and of your CI/CD pipeline
 
-&nbsp;
+### BONUS
 
-> **Please note:** For the following sections, you will need Databricks. DLT is not available in Databricks Community Edition, so you should use the free trial if you got this far. However, be aware that the free trial comes with capacity limitations that may impact your ability to complete the goals. _Continue at your own risk._
-
-&nbsp;
+> **Please note:** for the following sections, you **will** need Databricks. Delta Live Tables (DLT) is not available in Databricks Community Edition, so you should use the free trial if you got this far. However, be aware that the free trial comes with capacity limitations that may impact your ability to complete the goals.
+>
+> _Continue at your own risk._
 
 #### Level 3 / Future-Proof
 
