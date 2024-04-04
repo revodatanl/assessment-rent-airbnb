@@ -9,9 +9,12 @@ from io import BytesIO
 
 # COMMAND ----------
 
-airbnb_file_path = '/Workspace/Repos/kapposev@outlook.com/assessment-rent-airbnb/data/airbnb.zip'
-#airbnb_file_path = 'data/airbnb.zip'
-rental_file_path = '/Workspace/Repos/kapposev@outlook.com/assessment-rent-airbnb/data/rentals.zip'
+# MAGIC %run ./paths
+
+# COMMAND ----------
+
+airbnb_file_path = airbnb_zip_filepath
+rental_file_path = rental_zip_filepath
 output_directory = '/dbfs/FileStore/raw_data'
 
 unzip_file(airbnb_file_path, output_directory)
@@ -19,16 +22,9 @@ unzip_file(rental_file_path, output_directory)
 
 # COMMAND ----------
 
-air = spark.read.csv('dbfs:/FileStore/raw_data/airbnb.csv', header=True, inferSchema=True)
-rent = spark.read.json('dbfs:/FileStore/raw_data/rentals.json')
+# air = spark.read.csv(airbnb_bronze, header=True, inferSchema=True)
+# rent = spark.read.json(rent_bronze)
 
-
-
-# COMMAND ----------
-
-# file_to_delete = "dbfs:/dbfs"
-
-# dbutils.fs.rm(file_to_delete)
 
 
 # COMMAND ----------

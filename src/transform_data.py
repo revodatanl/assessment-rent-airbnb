@@ -9,8 +9,12 @@ from pyspark.sql import DataFrame
 
 # COMMAND ----------
 
-air = spark.read.csv('dbfs:/FileStore/raw_data/airbnb.csv', header=True, inferSchema=True)
-rent = spark.read.json('dbfs:/FileStore/raw_data/rentals.json')
+# MAGIC %run ./paths
+
+# COMMAND ----------
+
+air = spark.read.csv(airbnb_bronze, header=True, inferSchema=True)
+rent = spark.read.json(rent_bronze)
 
 # COMMAND ----------
 
@@ -60,68 +64,6 @@ rent = split_string_column(rent, "availability")
 
 # COMMAND ----------
 
-# from pyspark.sql.functions import when, length, substring, trim, current_date, expr
-
-# df = rent.withColumn("postedAgo_hours", 
-#                      when(trim(length(column_name)) < 4, 
-#                            when(substring(column_name, -1, 1) == 'w',substring('postedAgo', 1, 1)*24)
-#                           .when(substring(column_name, -1, 1) == 'd', substring('postedAgo', 1, 2)*24)
-#                           .when(substring(column_name, -1, 1) == 'h',substring('postedAgo', 1, 2) )
-                          
-#                           .otherwise("big date")
-#                      )
-#                 )
-
-
-
-# COMMAND ----------
-
-
-
-# # Extract the numerical part of the string
-# numeric_value = regexp_extract(column_name, "\\d+", 0)
-
-# df = rent.withColumn("postedAgo_hours", 
-#                      when(length(column_name) < 4, 
-#                           when(substring(column_name, -1, 1) == 'w', numeric_value.cast("int") * 24*7)
-#                           .when(substring(column_name, -1, 1) == 'd', numeric_value.cast("int") * 24)
-#                           .when(substring(column_name, -1, 1) == 'h', numeric_value.cast("int"))
-#                           .otherwise("big date")
-#                      )
-#                 )
-
-
-# COMMAND ----------
-
-
-
-
-# df = df.withColumn("postedAgo_dates",
-#                              when(length(column_name) > 6,
-#                                   to_date(column_name, "yy MMM dd"))
-#                              .otherwise(to_date(column_name, "dd MMM")))
-
-
-
-# from pyspark.sql.functions import concat, year, month, current_date
-
-# current_year = year(current_date())
-# current_month = month(current_date())
-
-# df = df.withColumn("postedAgo_dates",
-#                    when(length(column_name) > 6,
-#                         to_date(column_name, "yy MMM dd"))
-#                    .otherwise(
-#                        when(month(to_date(concat(column_name, current_year), "dd MMMyyyy")) > current_month,
-#                             to_date(concat(column_name, current_year - 1), "dd MMMyyyy"))
-#                        .otherwise(to_date(concat(column_name, current_year), "dd MMMyyyy"))
-#                    ))
-
-
-
-
-# COMMAND ----------
-
 rent=remove_chars_from_column(rent, "available_from","'")
 rent=remove_chars_from_column(rent, "available_until","'")
 rent = rent.withColumn("available_until", when(col("available_until") == "Indefinite period", "31-12-99").otherwise(col("available_until")))
@@ -151,7 +93,7 @@ rent = rent.drop(*columns_to_drop)
 
 # COMMAND ----------
 
-# Assuming 'df' is your DataFrame
+
 old_column_names = ["_id", "additionalCostsRaw",'areaSqm','descriptionTranslated','energyLabel','firstSeenAt','isRoomActive','lastSeenAt','propertyType','postedAgo','postalCode','registrationCost','smokingInside','pageDescription','rent_num','matchCapacity']
 new_column_names = ["id", "additional_raw_costs",'area_sqm','translated_description','energy_label','first_seen_at','is_room_active','last_seen_at','property_type','posted_ago','postal_code','registration_cost','smoking_inside','page_description','rent_price','match_capacity']
 
@@ -166,7 +108,3 @@ rent = convert_strings_to_numeric(rent, ["additional_raw_costs", "deposit",'area
 
 save_df_to_parquet(air, 'cleaned_airbnb_data.parquet', '/FileStore/cleaned_data')
 save_df_to_parquet(rent, 'cleaned_rent_data.parquet', '/FileStore/cleaned_data')
-
-# COMMAND ----------
-
-
