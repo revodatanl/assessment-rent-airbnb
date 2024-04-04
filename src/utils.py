@@ -1,5 +1,6 @@
 # Databricks notebook source
 from pyspark.sql.functions import *
+from pyspark.sql import DataFrame
 
 # COMMAND ----------
 
@@ -51,17 +52,7 @@ def remove_brackets(df, column_names):
 # COMMAND ----------
 
 def convert_string_columns_to_timestamps(df, column_names, timestamp_format):
-    """
-    Convert multiple string columns in a PySpark DataFrame to timestamp columns using the specified timestamp format.
-    
-    Args:
-        df (DataFrame): The PySpark DataFrame.
-        column_names (list): A list of string column names to convert.
-        timestamp_format (str): The format of the timestamp strings in the columns.
-        
-    Returns:
-        DataFrame: The PySpark DataFrame with the specified string columns converted to timestamp columns.
-    """
+
     # Iterate over each column name in the list and convert the column to a timestamp column
     for column_name in column_names:
         df = df.withColumn(column_name, to_timestamp(col(column_name), timestamp_format))
@@ -77,32 +68,52 @@ def norm_zip_code(df,column):
 
 # COMMAND ----------
 
-def split_date_range_column(df, date_range_column):
-    """
-    Split a date range column into 'available_from' and 'available_until' columns in a PySpark DataFrame.
+
+def split_string_column(df, column_name):
+
+    # Extract the first 9 characters and put them into 'available_from' column
+    df = df.withColumn("available_from", substring(col(column_name), 1, 9))
     
-    Args:
-        df (DataFrame): The PySpark DataFrame.
-        date_range_column (str): The name of the date range column.
-        
-    Returns:
-        DataFrame: The PySpark DataFrame with the date range column split into two new columns.
-    """
-    # Find the position of the third '-' character in the date range column
-    third_dash_pos = instr(col(date_range_column), "-")
-    third_dash_pos = instr(col(date_range_column)[third_dash_pos + 1:], "-") + third_dash_pos
+    # Extract the remaining characters and put them into 'available_until' column
+    df = df.withColumn("available_until", substring(col(column_name), 13, 100))  # Assuming the maximum length of the column is 100 characters
     
-    # Split the date range column into two parts based on the third '-'
-    df = df.withColumn("available_from", col(date_range_column).substr(1, third_dash_pos - 1))
-    df = df.withColumn("available_until", col(date_range_column).substr(third_dash_pos + 1))
+    return df
+
+
+# COMMAND ----------
+
+def split_column(df, column_name):
+
+    # Split the column into two parts based on the '-' character
+    split_col = split(df[column_name], '-')
     
-    # Convert date strings to actual date objects
-    df = df.withColumn("available_from", to_date(col("available_from"), 'dd-MM-yy'))
-    df = df.withColumn("available_until", when(col("available_until") == "Indefinite period", "9999-12-31").otherwise(to_date(col("available_until"), 'dd-MM-yy')))
+    # Create new columns 'rent' and 'Utilities incl' from the split parts
+    df = df.withColumn('rent_num', split_col.getItem(0))
+    df = df.withColumn('utilities_included', split_col.getItem(1))
     
     return df
 
 # COMMAND ----------
 
+def convert_strings_to_numeric(df, column_names):
 
+    # Apply the conversion logic to each column
+    converted_df = df
+    for column_name in column_names:
+        converted_df = converted_df.withColumn(column_name,
+                                               when(col(column_name) == '-', 0)
+                                               .otherwise(col(column_name).cast("float")))
+    
+    return converted_df
 
+# COMMAND ----------
+
+def rename_columns(df: DataFrame, old_names: list, new_names: list) -> DataFrame:
+
+    if len(old_names) != len(new_names):
+        raise ValueError("Length of old_names and new_names must be the same.")
+    
+    for old, new in zip(old_names, new_names):
+        df = df.withColumnRenamed(old, new)
+    
+    return df
