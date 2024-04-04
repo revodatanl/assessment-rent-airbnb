@@ -1,6 +1,8 @@
 # Databricks notebook source
 from pyspark.sql.functions import *
 from pyspark.sql import DataFrame
+from pyspark.sql import functions as F
+from pyspark.sql.window import Window
 
 # COMMAND ----------
 
@@ -154,11 +156,24 @@ def save_df_to_parquet(df, file_name, file_path):
 
 # COMMAND ----------
 
-cleaned_data_directory = '/FileStore/cleaned_data/'
-
-cleaned_rent_data_file = 'cleaned_rent_data.parquet'
-cleaned_air_data_file = 'cleaned_air_data.parquet'
-
+def calculate_cumulative_percentage(df, postal_code_col, rent_price_col):
+    # Group by postal code, calculate average rent price and count
+    result_df = df.groupBy(postal_code_col).agg(
+        F.mean(rent_price_col).alias('average_price'),
+        F.count(rent_price_col).alias('count')
+    )
+    
+    # Order by count in descending order
+    windowSpec = Window.orderBy(F.desc('count'))
+    result_df = result_df.orderBy(F.desc('count'))
+    
+    # Add a new column with the cumulative sum of count
+    result_df = result_df.withColumn('cumulative_sum', F.sum('count').over(windowSpec))
+    
+    # Calculate cumulative percentage based on cumulative sum of count
+    result_df = result_df.withColumn('cumulative_percentage', F.col('cumulative_sum') * 100 / F.sum('count').over(Window.partitionBy()))
+    
+    return result_df
 
 # COMMAND ----------
 
