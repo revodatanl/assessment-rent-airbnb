@@ -14,7 +14,8 @@ The project is organized into several components:
    - `KPI_calculation.ipynb`: Calculates KPIs such as potential average revenue per house and per postcode, and adds a column with cumulative count percentage.
    - `paths.ipynb`: Stores variables for different paths used in the project.
    - `utils.ipynb`: common functions used by the main scripts.
-   - `exploratory_data_analysis`: exploratory analysis.
+   - `exploratory_data_analysis_1`: exploratory analysis for the data cleaning stage.
+   - `exploratory_data_analysis_for_KPIs`: exploratory analysis for the KPI calcualtion.
    
 2. **Resources**:
    - `resource.yaml`: YAML file containing project resources.

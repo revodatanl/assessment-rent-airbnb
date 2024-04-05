@@ -3,6 +3,14 @@ from pyspark.sql.functions import *
 
 # COMMAND ----------
 
+# MAGIC %run /Workspace/Repos/kapposev@outlook.com/assessment-rent-airbnb/src/utils
+
+# COMMAND ----------
+
+# MAGIC %run /Workspace/Repos/kapposev@outlook.com/assessment-rent-airbnb/src/paths
+
+# COMMAND ----------
+
 air = spark.read.csv('dbfs:/FileStore/raw_data/airbnb.csv', header=True, inferSchema=True)
 rent = spark.read.json('dbfs:/FileStore/raw_data/rentals.json')
 
@@ -19,6 +27,17 @@ display(air)
 
 # Checking for datatypes
 display(air.dtypes)
+
+# COMMAND ----------
+
+# checking for null zipcodes
+display(air.filter(col("zipcode").isNull()))
+
+
+# COMMAND ----------
+
+# checking for null prices
+display(air.filter(col("price").isNull()))
 
 # COMMAND ----------
 
@@ -56,6 +75,7 @@ display(air.filter(air['review_scores_value'].isNotNull()))
 
 # COMMAND ----------
 
+# Cherck for null review scores and whta is its effect
 display(air.filter(air['review_scores_value'].isNull()))
 
 
@@ -69,6 +89,10 @@ display(invalid_zipcodes_df)
 
 # COMMAND ----------
 
+
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ### EDA for rent data
 
@@ -78,68 +102,25 @@ display(rent)
 
 # COMMAND ----------
 
-#rent = rent.withColumn('modified_id', regexp_replace(col('_id').cast('string'), "[\",\\[\\]]", ""))
-from pyspark.sql.functions import col, regexp_replace
+# checking for null zipcodes
+display(rent.filter(col("rent").isNull()))
 
-def remove_chars_from_column(df, column_name, chars_to_remove):
+# COMMAND ----------
 
-    # Construct the regex pattern to remove specified characters
-    regex_pattern = "[" + "\\".join(chars_to_remove) + "]"
-    
-    # Apply regexp_replace to remove specified characters from the column
-    df = df.withColumn(column_name, regexp_replace(col(column_name), regex_pattern, ""))
-    
-    return df
 
-# Example usage:
-# Assuming 'rent' is your DataFrame
-# Define the list of characters to remove
-chars_to_remove = [" m2"]
-
-# Call the function to remove specified characters from the specified column
-df = remove_chars_from_column(rent, "areaSqm", chars_to_remove)
+df = remove_chars_from_column(rent, "areaSqm", 'm2')
 
 # Show the DataFrame with the modified column
-
-
 display(df)
-
-
-# COMMAND ----------
-
-df = remove_trailing_leading_spaces(remove_chars_from_column(rent, "deposit", "€ "))
-
-# COMMAND ----------
-
-display(df)
-
-# COMMAND ----------
-
-
-
-from pyspark.sql.functions import col, trim
-
-def remove_trailing_leading_spaces(df):
-
-    # Get the names of all string columns
-    string_columns = [col_name for col_name, col_type in df.dtypes if col_type == 'string']
-    
-    # Apply trim to each string column
-    for column_name in string_columns:
-        df = df.withColumn(column_name, trim(col(column_name)))
-    
-    return df
-
-df = remove_trailing_leading_spaces(rent)
-
-# Show the DataFrame with the modified columns
-display(df)
-
 
 
 # COMMAND ----------
 
 # Checking for invalid zipcodes
-invalid_zipcodes_df_rent = rent.filter(~col('postal_code').rlike('^\d{4}[A-Za-z]{2}$'))
+invalid_zipcodes_df_rent = rent.filter(~col('postalCode').rlike('^\d{4}[A-Za-z]{2}$'))
 
 display(invalid_zipcodes_df_rent)
+
+# COMMAND ----------
+
+

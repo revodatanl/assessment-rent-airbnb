@@ -17,12 +17,13 @@ This project aims to the development of an pipeline in databricks for potential 
 
     - After the the transformation data is stored in DBFS as parquet files. At this stage the files can be used for various puproses and analysis.
     
-  - KPI Calculation (Gold): Only used fields that are necessary for this specific KPI calculation, the output is two tables with the average house revenue per house per zipcode. An additional field has been added presenting the cummulative count distribution for better desicion making (utilization of pareto distribution theory possibly). It might be the case that the average revenue is significantly high for certain zipcodes but this value is based only in a small amount of records which is not representative of the actual figures.For instance, if the calculation is derived based only in one house that is present in the specific area the revenue may be high but not representing the real value since the the sample is too small. The final files are stored both in DBFS (gold level) as parquet files and in the following folder `resources`
+  - KPI Calculation (Gold): Only used fields that are necessary for this specific KPI calculation, the output is two tables with the average house revenue per house per zipcode. An additional field has been added presenting the cummulative count distribution for better desicion making (utilization of pareto distribution theory possibly). It might be the case that the average revenue is significantly high for certain zipcodes but this value is based only in a small amount of records which is not representative of the actual figures.For instance, if the calculation is derived based only in one house that is present in the specific area the revenue may be high but not representing the real value since the the sample is too small. The final files are stored both in DBFS (gold level) as parquet files and in the following folder `resources`. In addition visualizations are presented of the average rent prices per zip code for both airbnb and rental houses data, for airbnb house represting the 80% of the count distribution are used while for rental data only zipcodes that have mopre than 25 houses since the amount of houses for this sample it quite enough to make conclusions and for the sake of the visualization.
   
-  - Automation: The pipeline can run in a databricks workflow based on the files placed in `resources`
+  - Automation: The pipeline can run in a databricks workflow based on the files placed in `resources`.
 
 ## Exploratory analysis
-- Several finding about rent prices can be found after an exploratory analysis of the data.
+- In `exploratory_data_analysis_1` basic data checks and basic anlaysis for data cleansing and transorming can be found.
+- In `exploratory_data_analysis_for_KPIs` aggregations and visualization to undertand the nature of the data and how to calculate the KPIs.
 
 ## Test
 - Simple test have been added to check the file extractionand transformation in the 3 different stages using the unittest python library.

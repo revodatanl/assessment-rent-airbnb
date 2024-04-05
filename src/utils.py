@@ -3,6 +3,8 @@ from pyspark.sql.functions import *
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
+import matplotlib.pyplot as plt
+
 
 # COMMAND ----------
 
@@ -177,4 +179,23 @@ def calculate_cumulative_percentage(df, postal_code_col, rent_price_col):
 
 # COMMAND ----------
 
+def plot_rent_prices(df, rent_price_column, zipcode_column, plot_title, bar_color='skyblue'):
 
+    # Convert PySpark DataFrame to Pandas DataFrame for plotting
+    rent_prices_pd = df.toPandas()
+
+    # Extracting data for plotting
+    categories = rent_prices_pd[zipcode_column]
+    rent_prices = rent_prices_pd[rent_price_column]
+
+    # Creating bar plot
+    plt.figure(figsize=(10, 6))
+    plt.bar(categories, rent_prices, color=bar_color)
+    plt.xlabel('Zip Code')
+    plt.ylabel('Rent Price')
+    plt.title(plot_title)  # Set plot title dynamically
+    plt.xticks(rotation=45)  # Rotate x-axis labels for better readability
+    plt.tight_layout()
+
+    # Show plot
+    plt.show()
