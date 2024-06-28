@@ -34,15 +34,16 @@ If you are applying for an engineering position, at a minimum, you will need to 
 It is expected that you deliver as part of the project:
 
 - Exploratory notebooks with data checks (in the `./scratch` folder)
-- Notebook(s) for your pipeline (in the `./src` folder)
-- Unit tests for your pipeline (in the `./src/tests` folder)
-- Documentation for your pipeline (in the `./docs` folder) - **explain the why, not the how**
+- Notebook(s) for your pipeline (in the `./src/notebooks` folder)
+- Libraries or (buildable) packages built for your pipeline (in the `./src/<package_name>` folder)
+- Unit tests for your pipeline (in the `./tests` folder)
+- Documentation for your pipeline (in the `README` and the `./docs` folder) - **explain the why, not the how**
 - An export of the datasets produced by your pipeline, (use Parquet format, in the `./data/output` folder)
 - Configurations for your pipeline jobs (in the `./resources` folder)
 
-We suggest using Databricks, either the [Community Edition](https://community.cloud.databricks.com/login.html) or a [free trial](https://www.databricks.com/try-databricks#account). However, most of all we are looking to understand how you work, so feel free to pick a tool you are most comfortable with - whether it's something like a local PySpark instance, DuckDB or a cloud service.
+We recommend using Databricks, either the [Community Edition](https://community.cloud.databricks.com/login.html) or a [free trial](https://www.databricks.com/try-databricks#account). However, most of all we are looking to understand how you work, so feel free to pick a tool you are most comfortable with - whether it's something like a local PySpark instance, DuckDB or a cloud service. Explain your reasoning.
 
-Save everything locally into the current Git repository, zip it up, and share it with us.
+Save everything in a private Git repository and share it with us.
 
 We expect you to spend 2-3 hours on the assessment, so apply your best judgment when prioritizing tasks.
 
