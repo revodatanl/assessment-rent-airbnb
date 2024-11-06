@@ -1,0 +1,44 @@
+base_dir: '/home/jiayin/assessment-rent-airbnb'
+
+paths:
+  data_dir: 'data'
+  output_dirs:
+    bronze: 'data/output/bronze'
+    silver: 'data/output/silver'
+    gold: 'data/output/gold'
+
+files:
+  zip:
+    rentals: 'rentals.zip'
+    airbnb: 'airbnb.zip'
+  geojson:
+    post_codes: 'geo/post_codes.geojson'
+    amsterdam_areas: 'geo/amsterdam_areas.geojson'
+  bronze_parquet:
+    rentals: 'rentals.parquet'
+    airbnb: 'airbnb.parquet'
+  silver_parquet:
+    rentals: 'rentals_cleaned.parquet'
+    airbnb: 'airbnb_cleaned.parquet'
+  gold_parquet:
+    output: 'average_revenue_per_postcode.parquet'
+
+columns:
+  rentals:
+    revenue: 'rent'
+    average_revenue: 'avg_revenue_rentals'
+    numbers: ['additionalCostsRaw', 'areaSqm', 'deposit', 'registrationCost', 'rent']
+    prices: ['additionalCostsRaw', 'deposit', 'registrationCost','rent']  
+    selected:
+      ['_id','city','streetAddress','zipcode','energyLabel','propertyType','areaSqm',
+      'availability_start_date','availability_end_date','roommates', 'smokingInside',
+      'shower','toilet', 'rent','registrationCost','deposit','additionalCostsRaw',]
+  airbnb:
+    revenue: 'price'
+    average_revenue: avg_revenue_airbnb
+    int_numbers: ['accommodates', 'bedrooms', 'review_scores_value',]
+    prices: ['price']
+    selected: 
+      ['province','municipality','zipcode','latitude','longitude',
+      'room_type','accommodates','bedrooms','price','review_scores_value',]
+      
