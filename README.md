@@ -41,7 +41,7 @@ It is expected that you deliver as part of the project:
 - An export of the datasets produced by your pipeline, (use Parquet format, in the `./data/output` folder)
 - Configurations for your pipeline jobs (in the `./resources` folder)
 
-We highly recommend using Databricks, either the [Community Edition](https://community.cloud.databricks.com/login.html) or a [free trial](http://signup.databricks.com/) using Express Setup. However, most of all we are looking to understand how you work, so feel free to pick a tool you are most comfortable with - whether it's something like a local PySpark instance, DuckDB or a cloud service. Explain your reasoning.
+We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](http://signup.databricks.com/). Note that the Community Edition does not provide all the functionality required for this assignment. However, most of all we are looking to understand how you work, so feel free to pick a tool you are most comfortable with - whether it's something like a local PySpark instance, DuckDB or a cloud service. Explain your reasoning.
 
 Save everything in a private Git repository and share it with us. Deliver us a clean repository: remove any redundant files, replace our `README` with your own, provide instructions how to build and run your project. If you are unsure how to structure your repository we recommend using our own [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates) as a starting point.
 
