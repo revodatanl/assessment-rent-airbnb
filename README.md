@@ -28,6 +28,7 @@ If you are applying for an engineering position, at a minimum, you will need to 
 - Ingest the rental data scraped from Kamernet: `./data/rentals.json`
 - Ingest the data from Airbnb: `./data/airbnb.csv`
 - Clean both datasets
+- Find a way to backfill non-compliant postal codes in the full 4-digit, 2-letters format (i.e. 1234 AB)
 - Calculate the potential average revenue per house, per postcode (rental and Airbnb)
 - Follow the principles of the [Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture#:~:text=A%20medallion%20architecture%20is%20a%20data%20design%20pattern,%28from%20Bronze%20%E2%87%92%20Silver%20%E2%87%92%20Gold%20layer%20tables%29.)
 
