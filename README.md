@@ -2,20 +2,15 @@
 
 ## Introduction
 
-This project provides an opportunity to demonstrate your expertise in data engineering using a real-world
-dataset.
+This project provides an opportunity to demonstrate your expertise in data engineering using a real-world dataset.
 
-Imagine yourself as a successful (and rich) data engineer seeking to reinvest your earnings in Amsterdam's
-property market for passive income. Your objective is to purchase houses and apartments, which you plan to
-lease either through long-term agreements on Kamernet or short-term listings on Airbnb.
+Imagine yourself as a successful (and rich) data engineer seeking to reinvest your earnings in Amsterdam's property market for passive income. Your objective is to purchase houses and apartments, which you plan to lease either through long-term agreements on Kamernet or short-term listings on Airbnb.
 
-As a skilled data engineer, you have already collected a dataset containing house locations and nightly prices
-from Airbnb and a second dataset from Kamernet.
+As a skilled data engineer, you have already collected a dataset containing house locations and nightly prices from Airbnb and a second dataset from Kamernet.
 
 ### Goal of the Assessment
 
-The aim is to identify postal codes with investment potential and determine whether renting properties
-long-term through Kamernet or via Airbnb would be more profitable.
+The aim is to identify postal codes with investment potential and determine whether renting properties long-term through Kamernet or via Airbnb would be more profitable.
 
 ## Product Development
 
@@ -50,8 +45,7 @@ The following deliverables are expected as part of the project:
 
 We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](http://signup.databricks.com/). Note that Community Edition does not provide all the functionality required for this assignment. However, we are primarily interested in understanding how you work, so feel free to pick a tool with which you are most comfortable—whether it’s a local PySpark instance, or a cloud service. Explain your reasoning.
 
-Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates).
-We expect you to spend 4-8 hours on the assessment, so apply your best judgment when prioritizing tasks.
+Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates). We expect you to spend 3-4 hours on the assessment, so apply your best judgment when prioritizing tasks.
 
 ### Stretch Goals
 
@@ -93,16 +87,10 @@ Following are a number of stretch goals of increasing difficulty that will give 
 
 ## Review
 
-Once you have completed this project, we will review it together. We are paying special attention to what you
-did or how you approached the pipeline logic and the challenges you addressed when issues arose. With the data
-provided, we expect some challenges, so we encourage creative workarounds and proactive measures.
+Once you have completed this project, we will review it together. We are paying special attention to what you did or how you approached the pipeline logic and the challenges you addressed when issues arose. With the data provided, we expect some challenges, so we encourage creative workarounds and proactive measures.
 
-As a note on using AI tools (ChatGPT, Copilot, etc.), we encourage you to use these tools to enhance your
-productivity. However, please remember that you are 100% responsible for the code you submit. You need to be
-able to explain how the code works and discuss the pros and cons of your implementations.
+As a note on using AI tools (ChatGPT, Copilot, etc.), we encourage you to use these tools to enhance your productivity. However, please remember that you are 100% responsible for the code you submit. You need to be able to explain how the code works and discuss the pros and cons of your implementations.
 
-Please do **not** use AI assistants in any way during the application process. We want to assess your technical
-skills, problem-solving abilities, and communication skills. Additionally, we want to evaluate your ability to
-clearly and concisely explain your thoughts.
+Please do **not** use AI assistants in any way during the interview process. We want to assess your technical skills, problem-solving abilities, and communication skills. Additionally, we want to evaluate your ability to clearly and concisely explain your thoughts.
 
 **Good luck, and see you on the other side!**
