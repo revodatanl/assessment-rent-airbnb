@@ -2,15 +2,15 @@
 
 ## Introduction
 
-This project will let you showcase your technical skills in data engineering, applied to a real-world dataset.
+This project provides an opportunity to demonstrate your expertise in data engineering using a real-world dataset.
 
-Let's imagine you're a very successful (and rich) data engineer who wants to reinvest your life's earnings in Amsterdam property, for a passive source of income. You are looking to buy houses and apartments, then either rent them out long-term (through Kamernet) or short-term (through Airbnb).
+Imagine yourself as a successful (and rich) data engineer seeking to reinvest your earnings in Amsterdam's property market for passive income. Your objective is to purchase houses and apartments, which you plan to lease either through long-term agreements on Kamernet or short-term listings on Airbnb.
 
-Skilled data engineer that you are, you have already extracted a dataset on house location and per-night prices from Airbnb, and you have a second data stream coming in from Kamernet, which you are actively scraping.
+As a skilled data engineer, you have already collected a dataset containing house locations and nightly prices from Airbnb and a second dataset from Kamernet.
 
 ### Goal of the Assessment
 
-You want to have an idea of which postal codes are better suited for investment, and from those, in which it's more profitable to rent long term or through Airbnb.
+The aim is to identify postal codes with investment potential and determine whether renting properties long-term through Kamernet or via Airbnb would be more profitable.
 
 ## Product Development
 
@@ -23,34 +23,33 @@ If you are applying for a non-engineering position:
 
 ## Engineering Deliverables
 
-If you are applying for an engineering position, at a minimum, you will need to build a (set of) data pipeline(s) that:
+If you are applying for an engineering role, you must at minimum build one or more data pipelines that:
 
-- Ingest the rental data scraped from Kamernet: `./data/rentals.json`
-- Ingest the data from Airbnb: `./data/airbnb.csv`
+- Ingest rental data scraped from Kamernet (`./data/rentals.json`)
+- Ingest data from Airbnb (`./data/airbnb.csv`)
 - Clean both datasets
-- For any missing or improper data you identify, design (and implement if time allows) a backfill method
-- Calculate the potential average revenue per house, per postcode (rental and Airbnb)
+- Identify and address any missing or improper data by designing (and implementing if time permits) a backfill
+strategy
+- Calculate potential revenue per property and per postal code for both rental and Airbnb sources
 - Follow the principles of the [Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture#:~:text=A%20medallion%20architecture%20is%20a%20data%20design%20pattern,%28from%20Bronze%20%E2%87%92%20Silver%20%E2%87%92%20Gold%20layer%20tables%29.)
 
-It is expected that you deliver as part of the project:
+The following deliverables are expected as part of the project:
 
-- Exploratory notebooks with data checks (in the `./scratch` folder)
-- Notebook(s) for your pipeline (in the `./notebooks` folder)
-- Libraries or (buildable) packages built for your pipeline (in the `./src/<package_name>` folder)
-- Unit tests for your pipeline (in the `./tests` folder)
-- Documentation for your pipeline (in the `README` and the `./docs` folder) - **explain the why, not the how**
-- An export of the datasets produced by your pipeline, (use Parquet format, in the `./data/output` folder)
-- Configurations for your pipeline jobs (in the `./resources` folder)
+- Exploratory notebooks with data validation checks (placed in the `./scratch` folder)
+- Notebooks containing your pipeline implementation (located in the `./notebooks` folder)
+- Libraries or buildable packages for your pipeline (stored in `./src/<package_name>`)
+- Unit tests for your pipeline (included in the `./tests` folder)
+- Documentation for your pipeline (documented in the `README` and `./docs` folders) - **explain the why, not the how**
+- Export of datasets produced by your pipeline, formatted as Parquet files (placed in `./data/output`)
+- Pipeline job configurations (included in the `./resources` folder)
 
-We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](http://signup.databricks.com/). Note that the Community Edition does not provide all the functionality required for this assignment. However, most of all we are looking to understand how you work, so feel free to pick a tool you are most comfortable with - whether it's something like a local PySpark instance, DuckDB or a cloud service. Explain your reasoning.
+We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](http://signup.databricks.com/). Note that Community Edition does not provide all the functionality required for this assignment. However, we are primarily interested in understanding how you work, so feel free to pick a tool with which you are most comfortable—whether it’s a local PySpark instance, or a cloud service. Explain your reasoning.
 
-Save everything in a private Git repository and share it with us. Deliver us a clean repository: remove any redundant files, replace our `README` with your own, provide instructions how to build and run your project. If you are unsure how to structure your repository we recommend using our own [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates) as a starting point.
-
-We expect you to spend 2-3 hours on the assessment, so apply your best judgment when prioritizing tasks.
+Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates). We expect you to spend 3-4 hours on the assessment, so apply your best judgment when prioritizing tasks.
 
 ### Stretch Goals
 
-Following are a number of stretch goals of increasing difficulty that will give us an idea of how far you can go. We **do not expect** that you'll be able to achieve all of these in the given time, so pick and choose whatever suits you best. It's preferable to focus on a complete and high-quality initial assessment rather than getting lost achieving these goals.
+Following are a number of stretch goals of increasing difficulty that will give us an idea of how far you can go. We **do not expect** that you will be able to achieve all of these in the given time, so pick and choose whatever suits you best. It is preferable to focus on a complete and high-quality initial assessment rather than getting lost achieving these goals.
 
 #### Level 1 / Engineer
 
@@ -60,7 +59,7 @@ Following are a number of stretch goals of increasing difficulty that will give 
 
 #### Level 2 / Artist
 
-- [ ] Build a visualization or dashboard showing the potential revenue per postcode (rental and Airbnb)
+- [ ] Build a visualization or dashboard displaying potential revenue per postcode (rental and Airbnb)
 - [ ] Create diagrams of the data flows and of your CI/CD pipeline
 
 > **Please note:** for the following sections, you **will** need Databricks. Delta Live Tables (DLT) is not available in Databricks Community Edition, so you should use the free trial if you got this far. However, be aware that the free trial comes with capacity limitations that may impact your ability to complete the goals.
@@ -75,12 +74,12 @@ Following are a number of stretch goals of increasing difficulty that will give 
 - [ ] Use expectations (if using DLT) or another framework (if not), to ensure data quality
 - [ ] Deploy your pipeline using Databricks Asset Bundles
 
-#### Level 4 / Steampunk IED
+#### Level 4 / over 9000
 
 - [ ] Load the data from `rentals.json` one record at a time with streaming ingestion
 - [ ] Update the gold layer table(s) in real time as new streaming data arrives
 
-#### Level 5 / Powerlevel 10K
+#### Level 5 / 10x Developer
 
 - [ ] Use the `./data/geo/post_codes.geojson` geographic dataset to enrich the Airbnb data with missing postcodes
 - [ ] - or - Query an external API such as [public.opendatasoft.com](https://public.opendatasoft.com/explore/dataset/georef-netherlands-postcode-pc4/api/) to fill in the missing postcodes using a UDF
@@ -88,8 +87,10 @@ Following are a number of stretch goals of increasing difficulty that will give 
 
 ## Review
 
-Once you have completed this project, we shall review it together. We are paying special attention to the pipeline logic you followed, and to what you did when things went south. And with this data we're giving you, things will go pretty south, so be creative with your workarounds and maybe even move the goalposts a bit in your favour.
+Once you have completed this project, we will review it together. We are paying special attention to what you did or how you approached the pipeline logic and the challenges you addressed when issues arose. With the data provided, we expect some challenges, so we encourage creative workarounds and proactive measures.
 
-Finally, as a side-note, we're also using ChatGPT. It's great. So don't be shy about employing it if you can, we want to see that you've also internalized whatever lessons you've learned from its input.
+As a note on using AI tools (ChatGPT, Copilot, etc.), we encourage you to use these tools to enhance your productivity. However, please remember that you are 100% responsible for the code you submit. You need to be able to explain how the code works and discuss the pros and cons of your implementations.
+
+Please do **not** use AI assistants in any way during the interview. We want to assess your technical skills, problem-solving abilities, and communication skills. Additionally, we want to evaluate your ability to clearly and concisely explain your thoughts.
 
 **Good luck, and see you on the other side!**
