@@ -22,6 +22,12 @@ checkpoint_location = f"{BASE_VOLUMES_PATH}/checkpoint/{dataset}_raw"
 
 # COMMAND ----------
 
+spark.sql(f"""create volume if not exists {CATALOG}.{SCHEMA}.lz_{dataset};""")
+spark.sql(f"""create volume if not exists {CATALOG}.{SCHEMA}.autoloader;""")
+spark.sql(f"""create volume if not exists {CATALOG}.{SCHEMA}.checkpoint;""")
+
+# COMMAND ----------
+
 df = AutoLoader(
     format=AutoLoaderFormat.CSV,
     location=location,

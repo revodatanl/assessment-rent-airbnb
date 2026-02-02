@@ -22,7 +22,13 @@ Used [Koheesio](https://github.com/Nike-Inc/koheesio) classes instead writing pu
 
 - Continue with the streaming approach as it will provide the necessary future proofing and flexibility
 - `forEachBatch` is used because `MERGE` statement otherwise not supported, however it is crucial to update data over time, preserve uniqueness on the business key level, as well as facilitate the backfill
-- Cleansed table are created in advance which allows tight controls over the schema and necessary table features. In real life enterprise scenario unity catalog objects should never be created directly via ETL notebook. Better approach is to define the objects and their evolution via dedicated DDL statements and deploy those via CICD using some database management system (e.g. Liquibase). Schema evolution of the above mentioned objects should also be done via database management and CICD
+- Cleansed table are created in advance which allows tight controls over the schema and necessary table features. In real life enterprise scenario unity catalog objects should never be created directly via ETL notebook. Better approach is to define the objects and their evolution via dedicated DDL statements and deploy those via CICD using some database management system (e.g. Liquibase). Schema evolution of the above mentioned objects should also be done via database management and CICD. This can also be treated as pre-requisite if gold layer is created view view / materialized view.
 - Using UUIDs because in enterprise environment using the predetermined algorithm and set of columns will allow to generate identical UUIDs within different pipelines (even owned by different teams) and eliminates the need to use dimensional table to lookup the PK
 - (*TODO*) Use timestamp (if available) or CDF to properly deduplicate rows within the `forEachBatch` function
 - (*TODO*) Geo-spatial functionality (`st_`) were not available in the workspace / cluster type that I was using, hence storing latitude and longitude in separate decimal columns, ideally `st_geogfromtext(concat('point(', longitude, ' ', latitude, ')')) as location_geog` should be used
+- (*TODO*) Potential consideration is to load cleansed data into one object instead of two and partition them on the `source` colum because they both represent property related information
+
+### Business Consumption (Gold)
+- Creating consumable view for the purposes of this assessment. In enterprise scenario and depending on the data volume, this could be materialized view or integrated table object with pre-calculated metrics and KPIs
+- `CREATE OR REPLACE` view is not ideal because any permissions that were set on a view will be lost, ideal approach is to `CREATE` first and if any evolution of the view is required do `ALTER`
+- Creating views with schema evolution for `select *` cases can also be an option if (and only if), structure of the underlying table is tightly controlled
