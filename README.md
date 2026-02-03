@@ -17,9 +17,10 @@ Marked a few items as TODO, because those should be implemented in the real-worl
 ### Koheesio
 
 Used [Koheesio](https://github.com/Nike-Inc/koheesio) classes instead writing pure PySpark code to read / write / process the data because:
-  - I am one of the co-owners and maintainers of this framework
-  - I am very familiar with its capabilities
-  - In the enterprise environment it makes more sense to have a shared library with established patterns for common tasks
+
+- I am one of the co-owners and maintainers of this framework
+- I am very familiar with its capabilities
+- In the enterprise environment it makes more sense to have a shared library with established patterns for common tasks
 
 ### Raw (Bronze)
 
@@ -39,6 +40,16 @@ Used [Koheesio](https://github.com/Nike-Inc/koheesio) classes instead writing pu
 - (*TODO*) Potential consideration is to load cleansed data into one object instead of two and partition them on the `source` colum because they both represent property related information
 
 ### Business Consumption (Gold)
+
 - Creating consumable view for the purposes of this assessment. In enterprise scenario and depending on the data volume, this could be materialized view or integrated table object with pre-calculated metrics and KPIs
 - `CREATE OR REPLACE` view is not ideal because any permissions that were set on a view will be lost, ideal approach is to `CREATE` first and if any evolution of the view is required do `ALTER`
 - Creating views with schema evolution for `select *` cases can also be an option if (and only if), structure of the underlying table is tightly controlled
+
+### Testing
+
+- Typically I prefer the shift-left approach and a comprehensive test suit, that allows for unit and component testing without actual deployment to Databricks. This envolves spinning up local Spark with Delta support, creating test tables and loading test data. While the initial setup can be a bit tedious, the benefit is the possibility to test specific business logic in SQL queries, individual functions and treat notebooks as components and run test on them as well
+- PyTest allows for the necessary flexibility by supporting fixtures for different scopes, the fixtures are easy to reuse across enterprise environment as well
+
+### CI/CD
+
+- GitHub Actions are the easiest to setup. They can be also developed and tests locally with [act](https://github.com/nektos/act), which significantly simplifies development and maintenance
