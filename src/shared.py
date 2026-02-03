@@ -1,7 +1,7 @@
-from pyspark.sql import DataFrame
 from koheesio.spark.transformations.hash import Sha2Hash
-from koheesio.spark.transformations.uuid5 import HashUUID5
 from koheesio.spark.transformations.row_number_dedup import RowNumberDedup
+from koheesio.spark.transformations.uuid5 import HashUUID5
+from pyspark.sql import DataFrame
 
 CATALOG = "development"
 SCHEMA = "personal_mmityu"
@@ -10,17 +10,14 @@ BASE_VOLUMES_PATH = f"/Volumes/{CATALOG}/{SCHEMA}"
 CONFIG = {
     "catalog": "development",
     "schema": "personal_mmityu",
-    "lz": {
-        "airbnb": "lz_airbnb",
-        "rentals": "lz_rentals"
-    },
-    "raw": {
-        "airbnb": "raw_airbnb",
-        "rentals": "raw_rentals"
-    }
+    "lz": {"airbnb": "lz_airbnb", "rentals": "lz_rentals"},
+    "raw": {"airbnb": "raw_airbnb", "rentals": "raw_rentals"},
 }
 
-def common_transformations(df: DataFrame, hash_key_columns: list, hash_output_column: str) -> DataFrame:
+
+def common_transformations(
+    df: DataFrame, hash_key_columns: list, hash_output_column: str
+) -> DataFrame:
     return (
         df.transform(
             HashUUID5(

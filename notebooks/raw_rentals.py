@@ -5,13 +5,13 @@
 # COMMAND ----------
 
 from koheesio.context import Context
-from koheesio.spark.readers.databricks.autoloader import AutoLoader, AutoLoaderFormat
 from koheesio.spark.delta import DeltaTableStep
-from koheesio.spark.writers.delta import DeltaTableStreamWriter
+from koheesio.spark.readers.databricks.autoloader import AutoLoader, AutoLoaderFormat
 from koheesio.spark.writers import StreamingOutputMode
+from koheesio.spark.writers.delta import DeltaTableStreamWriter
 from koheesio.spark.writers.stream import Trigger
 
-from src.shared import CONFIG, BASE_VOLUMES_PATH, CATALOG, SCHEMA
+from src.shared import BASE_VOLUMES_PATH, CATALOG, CONFIG, SCHEMA
 
 # COMMAND ----------
 
@@ -33,7 +33,7 @@ df = AutoLoader(
     location=location,
     schema_location=schema_location,
     # schema_=schema,
-    options={"header": True}
+    options={"header": True},
 ).read()
 
 delta_table = DeltaTableStep(

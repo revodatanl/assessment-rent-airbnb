@@ -1,21 +1,26 @@
 # Databricks notebook source
 # MAGIC
 # MAGIC %pip install koheesio==0.10.6
-# MAGIC %restart_python 
+# MAGIC %restart_python
 # MAGIC
 
 # COMMAND ----------
 
 from koheesio.spark.delta import DeltaTableStep
 from koheesio.spark.readers.delta import DeltaTableReader
-from koheesio.spark.transformations.uuid5 import HashUUID5
-from koheesio.spark.writers.delta import DeltaTableStreamWriter
-from koheesio.spark.writers import StreamingOutputMode
-from koheesio.spark.writers.stream import Trigger
 from koheesio.spark.transformations.transform import Transform
+from koheesio.spark.transformations.uuid5 import HashUUID5
+from koheesio.spark.writers import StreamingOutputMode
+from koheesio.spark.writers.delta import DeltaTableStreamWriter
+from koheesio.spark.writers.stream import Trigger
 
-from src.shared import CONFIG, BASE_VOLUMES_PATH, CATALOG, SCHEMA
-from src.shared import common_transformations
+from src.shared import (
+    BASE_VOLUMES_PATH,
+    CATALOG,
+    CONFIG,
+    SCHEMA,
+    common_transformations,
+)
 
 # COMMAND ----------
 
@@ -90,19 +95,16 @@ df = spark.sql(
 
 # COMMAND ----------
 
+
 def batch_function(df, batch_id):
     spark = df.sparkSession
-    df = (
-        df
-        .transform(
-            Transform(
-                func=common_transformations,
-                hash_key_columns=["latitude_deg", "longitude_deg"]
-                , hash_output_column="airbnb_uuid"
-            )
+    df = df.transform(
+        Transform(
+            func=common_transformations,
+            hash_key_columns=["latitude_deg", "longitude_deg"],
+            hash_output_column="airbnb_uuid",
         )
-        .drop_duplicates()
-    )
+    ).drop_duplicates()
 
     df.createOrReplaceTempView("s")
 
@@ -151,6 +153,7 @@ def batch_function(df, batch_id):
             )
         """
     )
+
 
 DeltaTableStreamWriter(
     df=df,

@@ -1,5 +1,15 @@
 # RevoData's Technical Assessment
 
+## Development
+
+### Local Environment
+
+- Install Poetry
+- Use provided Makefile to setup environment: `make dev`
+- Install pre-commit: `make pre-commit-install`
+- Run tests: `make test`
+- Refer to `Makefile` for the full list pf commands
+
 ## Introduction
 
 Marked a few items as TODO, because those should be implemented in the real-world scenario when time constraints are not so tight

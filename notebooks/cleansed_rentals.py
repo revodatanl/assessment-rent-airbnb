@@ -1,21 +1,26 @@
 # Databricks notebook source
 # MAGIC
 # MAGIC %pip install koheesio==0.10.6
-# MAGIC %restart_python 
+# MAGIC %restart_python
 # MAGIC
 
 # COMMAND ----------
 
 from koheesio.spark.delta import DeltaTableStep
 from koheesio.spark.readers.delta import DeltaTableReader
-from koheesio.spark.transformations.uuid5 import HashUUID5
-from koheesio.spark.writers.delta import DeltaTableStreamWriter
-from koheesio.spark.writers import StreamingOutputMode
-from koheesio.spark.writers.stream import Trigger
 from koheesio.spark.transformations.transform import Transform
+from koheesio.spark.transformations.uuid5 import HashUUID5
+from koheesio.spark.writers import StreamingOutputMode
+from koheesio.spark.writers.delta import DeltaTableStreamWriter
+from koheesio.spark.writers.stream import Trigger
 
-from src.shared import CONFIG, BASE_VOLUMES_PATH, CATALOG, SCHEMA
-from src.shared import common_transformations
+from src.shared import (
+    BASE_VOLUMES_PATH,
+    CATALOG,
+    CONFIG,
+    SCHEMA,
+    common_transformations,
+)
 
 # COMMAND ----------
 
@@ -129,7 +134,7 @@ df = spark.sql(
         , trim(propertyType) as property_type_desc
         , ifnull(nullif(regexp_replace(registrationCost, '[^0-9.]', ''),''),0) as registration_cost_amt_eur
         , nullif(regexp_replace(split(rent,',- ')[0], '[^0-9.]', ''),'') as rent_amt_eur
-        , if(trim(try_element_at(split(rent,',- '),2)) = 'Utilities incl.','Y','N') as utilities_included_ind   
+        , if(trim(try_element_at(split(rent,',- '),2)) = 'Utilities incl.','Y','N') as utilities_included_ind
         , 'kamernet' as source_type_desc
     from rentals
     """
@@ -137,19 +142,16 @@ df = spark.sql(
 
 # COMMAND ----------
 
+
 def batch_function(df, batch_id):
     spark = df.sparkSession
-    df = (
-        df
-        .transform(
-            Transform(
-                func=common_transformations,
-                hash_key_columns=["rental_id"],
-                hash_output_column="rental_uuid"
-            )
+    df = df.transform(
+        Transform(
+            func=common_transformations,
+            hash_key_columns=["rental_id"],
+            hash_output_column="rental_uuid",
         )
-        .drop_duplicates()
-    )
+    ).drop_duplicates()
 
     df.createOrReplaceTempView("s")
 
@@ -237,6 +239,7 @@ def batch_function(df, batch_id):
             )
         """
     )
+
 
 DeltaTableStreamWriter(
     df=df,

@@ -1,0 +1,51 @@
+[tool.poetry]
+name = "revodata-tech-assessment"
+version = "0.0.1"
+description = ""
+authors = [
+    "Maxim Mityutko <m@brhd.io>",
+]
+packages = [{include = "src"}]
+
+
+[tool.poetry.dependencies]
+python = ">=3.11.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "~4.2" 
+pylint = "^3.0.3"
+pytest = "^7.4.4"
+black = "^24.3.0"
+isort = "^6.0.1"
+jedi = "^0.19.2"
+pytest-cov = "^6.2.1"
+requests = "^2.32.4"
+pytest-mock = "^3.5.1"
+
+[build-system]
+requires = ["poetry-core>=1.8.1"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+source = [
+    "src"
+]
+omit = [
+    ".venv/*",
+    ".virtualenv/*",
+    "tests/"
+]
+
+[tool.coverage.report]
+fail_under = 70
+
+[tool.coverage.html]
+directory = ".html"
+
+[tool.black]
+exclude = ".*(venv|virtualenv|migrations|node_modules|s3)"
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+skip = '.virtualenv,.venv'

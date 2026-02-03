@@ -1,20 +1,21 @@
 # Databricks notebook source
 # MAGIC %pip install koheesio==0.10.6
-# MAGIC %restart_python  
+# MAGIC %restart_python
 
 # COMMAND ----------
 
-from koheesio.spark.writers.file_writer import CsvFileWriter
-from koheesio.spark.writers import BatchOutputMode
 from koheesio.spark.readers.spark_sql_reader import SparkSqlReader
+from koheesio.spark.writers import BatchOutputMode
+from koheesio.spark.writers.file_writer import CsvFileWriter
 
-from src.shared import CONFIG, BASE_VOLUMES_PATH, CATALOG, SCHEMA
+from src.shared import BASE_VOLUMES_PATH, CATALOG, CONFIG, SCHEMA
 
 # COMMAND ----------
 
-spark.sql(f"""
+spark.sql(
+    f"""
     create or replace view {CATALOG}.{SCHEMA}.investment_opportunity
-    as 
+    as
     select *
     , dense_rank(airbnb_income_amt) over (order by airbnb_income_amt desc) as airbnb_income_rank
     , dense_rank(kamernet_income_amt) over (order by kamernet_income_amt desc) as kamernet_income_rank
@@ -38,13 +39,16 @@ spark.sql(f"""
         and ac.airbnb_uuid is not null
         and utilities_included_ind = 'N'
     )
-""")
+"""
+)
 
 # COMMAND ----------
 
-spark.sql(f"""
+spark.sql(
+    f"""
     create volume if not exists {CATALOG}.{SCHEMA}.output;
-""")
+"""
+)
 
 # COMMAND ----------
 
@@ -52,9 +56,7 @@ output_path = f"{BASE_VOLUMES_PATH}/output/"
 
 # COMMAND ----------
 
-reader = SparkSqlReader(
-    sql=f"select * from {CATALOG}.{SCHEMA}.investment_opportunity"
-)
+reader = SparkSqlReader(sql=f"select * from {CATALOG}.{SCHEMA}.investment_opportunity")
 writer = CsvFileWriter(
     df=reader.read().coalesce(1),
     path=output_path,

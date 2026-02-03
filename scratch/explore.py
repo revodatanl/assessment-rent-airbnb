@@ -27,11 +27,11 @@ display(df.describe())
 # COMMAND ----------
 
 
-
 # COMMAND ----------
 
-display(spark.sql(
-    """
+display(
+    spark.sql(
+        """
     select _id[0] as rental_id
         , ifnull(nullif(regexp_replace(additionalCostsRaw, '[^0-9.]', ''),''),0) as additional_cost_amt_eur
         , cast(replace(areaSqm, ' m2', '') as integer) as area_m2
@@ -67,7 +67,8 @@ display(spark.sql(
         , 'kamernet' as source_type_desc
     from rentals
     """
-))
+    )
+)
 
 # COMMAND ----------
 
