@@ -1,4 +1,3 @@
-files: notebooks/
 default_stages: [pre-commit, manual]
 default_language_version:
     python: python3.11
