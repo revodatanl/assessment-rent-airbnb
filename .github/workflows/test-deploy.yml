@@ -1,0 +1,41 @@
+name: Test and Deploy
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+      - 'latest'
+  pull_request:
+    branches:
+      - 'master'
+      - 'main'
+    paths-ignore:
+      - 'README.md'
+  workflow_dispatch:
+    inputs:
+      deployment-environment:
+        description: 'Deployment environment:'
+        required: true
+        default: 'dev'
+
+env:
+  DEPLOYMENT_ENVIRONMENT: ${{ github.event.inputs.deployment-environment || 'dev' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@master
+        with:
+          python-version: 3.11.13
+
+      - name: Check Coverage
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+          poetry install --no-root --with dev
+          pytest --cov
