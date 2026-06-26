@@ -1,96 +1,123 @@
-# RevoData's Technical Assessment
+# Amsterdam Property Investment Pipeline
 
-## Introduction
+PySpark medallion pipeline that compares **Airbnb short-term** vs **Kamernet long-term** rental revenue per Amsterdam postcode (PC4), to identify where investment is more profitable.
 
-This project provides an opportunity to demonstrate your expertise in data engineering using a real-world dataset.
+Built for the [RevoData technical assessment](https://github.com/revodatanl/assessment-rent-airbnb).
 
-Imagine yourself as a successful (and rich) data engineer seeking to reinvest your earnings in Amsterdam's property market for passive income. Your objective is to purchase houses and apartments, which you plan to lease either through long-term agreements on Kamernet or short-term listings on Airbnb.
+## What it answers
 
-As a skilled data engineer, you have already collected a dataset containing house locations and nightly prices from Airbnb and a second dataset from Kamernet.
+> For each Amsterdam PC4, should I rent via Airbnb or Kamernet?
 
-### Goal of the Assessment
+Gold output ranks postcodes by revenue potential and gives a `recommendation` per area (`airbnb`, `rental`, `neutral`, etc.).
 
-The aim is to identify postal codes with investment potential and determine whether renting properties long-term through Kamernet or via Airbnb would be more profitable.
+## Why these design choices
 
-## Product Development
+| Decision | Why |
+|---|---|
+| **Medallion (Bronze → Silver → Gold)** | Raw audit trail, reusable cleaned layer, analytics isolated in Gold |
+| **Local PySpark** | Reviewer can run without Databricks; job YAML + wheel entry points for cloud deploy |
+| **Geo-enrich missing zipcodes** | 22.7% of Airbnb rows lack PC4 but have lat/lon — dropping them biases results |
+| **Quarantine, not silent drop** | Bad rows kept in `_quarantine/` for inspection and reprocessing |
+| **Flag outliers, exclude from averages** | €9k/night penthouses are real but shouldn't skew PC4 means |
+| **Explicit revenue constants** | Occupancy, fees, months/year in `schemas.py` — assumptions visible and overridable |
 
-If you are applying for a non-engineering position:
+See [docs/decisions.md](docs/decisions.md) for full rationale.
 
-- Create a conceptual design of how the implementation looks like (either components or process)
-- Create a business case
-- Create a roadmap with milestones how you would deliver this implementation with a team of engineers
-- Create a storyline based on the above input to convince the customer to invest
+## Quick start
 
-## Engineering Deliverables
+**Prerequisites:** Python 3.10+, Java 11/17
 
-If you are applying for an engineering role, you must at minimum build one or more data pipelines that:
+```bash
+# 1. Unzip data (from repo root)
+unzip data/input/airbnb.zip -d data/input
+unzip data/input/rentals.zip -d data/input
+unzip data/input/geo/post_codes.zip -d data/input/geo/
+unzip data/input/geo/amsterdam_areas.zip -d data/input/geo/
 
-- Ingest rental data scraped from Kamernet (`./data/rentals.json`)
-- Ingest data from Airbnb (`./data/airbnb.csv`)
-- Clean both datasets
-- Identify and address any missing or improper data by designing (and implementing if time permits) a backfill
-strategy
-- Calculate potential revenue per property and per postal code for both rental and Airbnb sources
-- Follow the principles of the [Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture#:~:text=A%20medallion%20architecture%20is%20a%20data%20design%20pattern,%28from%20Bronze%20%E2%87%92%20Silver%20%E2%87%92%20Gold%20layer%20tables%29.)
+# 2. Install
+python3 -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 
-The following deliverables are expected as part of the project:
+# 3. Run pipeline
+export PYSPARK_PYTHON=.venv/bin/python
+export PYSPARK_DRIVER_PYTHON=.venv/bin/python
+python -m rent_airbnb.pipeline
+```
 
-- Exploratory notebooks with data validation checks (placed in the `./scratch` folder)
-- Notebooks containing your pipeline implementation (located in the `./notebooks` folder)
-- Libraries or buildable packages for your pipeline (stored in `./src/<package_name>`)
-- Unit tests for your pipeline (included in the `./tests` folder)
-- Documentation for your pipeline (documented in the `README` and `./docs` folders) - **explain the why, not the how**
-- Export of datasets produced by your pipeline, formatted as Parquet files (placed in `./data/output`)
-- Pipeline job configurations (included in the `./resources` folder)
+Or: `make install && make run`
 
-We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](http://signup.databricks.com/). Note that Community Edition does not provide all the functionality required for this assignment. However, we are primarily interested in understanding how you work, so feel free to pick a tool with which you are most comfortable—whether it’s a local PySpark instance, or a cloud service. Explain your reasoning.
+Full setup: [docs/setup.md](docs/setup.md)
 
-Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Asset Bundle Templates](https://github.com/revodatanl/revo-asset-bundle-templates). We expect you to spend 3-4 hours on the assessment, so apply your best judgment when prioritizing tasks.
+## Output
 
-### Stretch Goals
+Parquet under `data/output/`:
 
-Following are a number of stretch goals of increasing difficulty that will give us an idea of how far you can go. We **do not expect** that you will be able to achieve all of these in the given time, so pick and choose whatever suits you best. It is preferable to focus on a complete and high-quality initial assessment rather than getting lost achieving these goals.
+| Layer | Path | Content |
+|---|---|---|
+| Bronze | `bronze/airbnb/`, `bronze/rentals/` | Raw ingested data + lineage metadata |
+| Silver | `silver/airbnb/`, `silver/rentals/` | Cleaned, typed, geo-enriched listings |
+| Silver | `silver/*/_quarantine/` | Rejected records |
+| Gold | `gold/airbnb_listing_revenue/`, `gold/rentals_listing_revenue/` | Per-listing annual revenue |
+| Gold | `gold/airbnb_by_pc4/`, `gold/rentals_by_pc4/` | PC4-level aggregates |
+| Gold | `gold/investment_comparison/` | Side-by-side PC4 comparison |
+| Gold | `gold/top_opportunities/` | Top 20 PC4s by Airbnb revenue |
 
-#### Level 1 / Engineer
+The CLI prints the top-opportunities table at the end.
 
-- [ ] Build a CI/CD pipeline that deploys your data pipeline
-- [ ] Run tests in your CI/CD pipeline
-- [ ] Use pre-commit hooks to ensure code quality
+## Project layout
 
-#### Level 2 / Artist
+```
+src/rent_airbnb/     Pipeline package (bronze, silver, gold, jobs)
+tests/               Unit tests (50)
+notebooks/           Pipeline walkthrough + visualisation
+scratch/             EDA / validation checks
+resources/           Databricks job + DLT + streaming YAML
+dlt/                 Delta Live Tables pipeline (L3)
+databricks.yml       Asset bundle root
+docs/                Setup guide + design decisions
+data/input/          Source datasets (zips + extracted files)
+data/output/         Generated Parquet (gitignored)
+```
 
-- [ ] Build a visualization or dashboard displaying potential revenue per postcode (rental and Airbnb)
-- [ ] Create diagrams of the data flows and of your CI/CD pipeline
+## Development
 
-> **Please note:** for the following sections, you **will** need Databricks. Delta Live Tables (DLT) is not available in Databricks Community Edition, so you should use the free trial if you got this far. However, be aware that the free trial comes with capacity limitations that may impact your ability to complete the goals.
->
-> _Continue at your own risk._
+```bash
+make test          # pytest
+make lint          # ruff check + format
+pre-commit install # optional — runs ruff on commit
+```
 
-### BONUS
+CI: `.github/workflows/ci.yml` runs lint + tests on push.
 
-#### Level 3 / Future-Proof
+## Databricks
 
-- [ ] Use Delta Live Tables (DLT) to build your pipelines
-- [ ] Use expectations (if using DLT) or another framework (if not), to ensure data quality
-- [ ] Deploy your pipeline using Databricks Asset Bundles
+Wheel entry points: `bronze_job`, `silver_job`, `gold_job`, `pipeline_job`, `streaming_job`.
 
-#### Level 4 / over 9000
+```bash
+pip wheel . -w dist --no-deps
+databricks bundle deploy -t dev    # requires DATABRICKS_HOST + DATABRICKS_TOKEN
+```
 
-- [ ] Load the data from `rentals.json` one record at a time with streaming ingestion
-- [ ] Update the gold layer table(s) in real time as new streaming data arrives
+Resources: batch job, DLT pipeline, streaming job — see `databricks.yml`.
 
-#### Level 5 / 10x Developer
+## Stretch goals implemented
 
-- [ ] Use the `./data/geo/post_codes.geojson` geographic dataset to enrich the Airbnb data with missing postcodes
-- [ ] - or - Query an external API such as [public.opendatasoft.com](https://public.opendatasoft.com/explore/dataset/georef-netherlands-postcode-pc4/api/) to fill in the missing postcodes using a UDF
-- [ ] Use the `./data/geo/amsterdam_areas.geojson` geographic dataset for your visualization
+| Level | Item | Location |
+|---|---|---|
+| **L1** | Pre-commit + CI + deploy | `.pre-commit-config.yaml`, `.github/workflows/` (`deploy.yml` is manual `workflow_dispatch`) |
+| **L2** | Visualisation + diagrams | `notebooks/02_visualisation.py`, `docs/diagrams.md` |
+| **L3** | DLT + expectations + bundle | `dlt/rent_airbnb_pipeline.py`, `resources/dlt_pipeline.yml` |
+| **L4** | Streaming + live gold | `streaming.py`, `make stream` |
+| **L5** | Geo-enrich + areas map | `Pc4SpatialIndex`, amsterdam_areas overlay |
 
-## Review
+```bash
+make run && make stream-prepare && make stream   # L4 demo
+```
 
-Once you have completed this project, we will review it together. We are paying special attention to what you did or how you approached the pipeline logic and the challenges you addressed when issues arose. With the data provided, we expect some challenges, so we encourage creative workarounds and proactive measures.
+## Revenue model
 
-As a note on using AI tools (ChatGPT, Copilot, etc.), we encourage you to use these tools to enhance your productivity. However, please remember that you are 100% responsible for the code you submit. You need to be able to explain how the code works and discuss the pros and cons of your implementations.
+**Airbnb:** `price × 0.65 occupancy × 365 nights × 0.97 (after 3% fee)`
 
-Please do **not** use AI assistants in any way during the interview. We want to assess your technical skills, problem-solving abilities, and communication skills. Additionally, we want to evaluate your ability to clearly and concisely explain your thoughts.
+**Kamernet:** `(rent + additional_costs) × 11 months`
 
-**Good luck, and see you on the other side!**
+Constants in `src/rent_airbnb/schemas.py`.
