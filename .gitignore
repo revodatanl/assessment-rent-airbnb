@@ -1,0 +1,40 @@
+# --- Generated pipeline output & extracted data ---
+data/output/
+data/output/_checkpoints/
+data/input/streaming/
+data/input/*.csv
+data/input/*.json
+data/input/geo/*.geojson
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+dist/
+*.egg-info/
+.eggs/
+
+# --- Env & secrets ---
+.venv/
+venv/
+.env
+.env.*
+
+# --- Test & lint ---
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+
+# --- OS & IDE ---
+.DS_Store
+.idea/
+.vscode/
+
+# --- Spark / Databricks ---
+metastore_db/
+spark-warehouse/
+.databricks/

@@ -1,0 +1,30 @@
+# DLT pipeline (L3) — Delta Live Tables with expectations
+
+resources:
+  pipelines:
+    rent_airbnb_dlt:
+      name: rent-airbnb-dlt-pipeline
+      edition: ADVANCED
+      channel: CURRENT
+      development: true
+      continuous: false
+      photon: false
+      target: ${var.schema}
+      catalog: ${var.catalog}
+      configuration:
+        airbnb_csv: ${var.airbnb_csv}
+        rentals_json: ${var.rentals_json}
+        post_codes_geojson: ${var.post_codes_geojson}
+        catalog: ${var.catalog}
+        schema: ${var.schema}
+      libraries:
+        - file:
+            path: ../dlt/rent_airbnb_pipeline.py
+        - whl: ../dist/*.whl
+      clusters:
+        - label: default
+          num_workers: 1
+          node_type_id: i3.xlarge
+          spark_version: 14.3.x-scala2.12
+          custom_tags:
+            project: rent-airbnb

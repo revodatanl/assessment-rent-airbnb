@@ -1,0 +1,45 @@
+# Databricks Asset Bundle — deploy: databricks bundle deploy -t dev
+bundle:
+  name: rent-airbnb
+
+variables:
+  output_base:
+    default: /dbfs/tmp/rent-airbnb/output
+  airbnb_csv:
+    default: /dbfs/tmp/rent-airbnb/data/input/airbnb.csv
+  rentals_json:
+    default: /dbfs/tmp/rent-airbnb/data/input/rentals.json
+  post_codes_geojson:
+    default: /dbfs/tmp/rent-airbnb/data/geo/post_codes.geojson
+  catalog:
+    default: main
+  schema:
+    default: rent_airbnb
+
+artifacts:
+  rent_airbnb_wheel:
+    type: whl
+    build: pip wheel . -w dist --no-deps
+
+include:
+  - resources/databricks_job.yml
+  - resources/dlt_pipeline.yml
+  - resources/streaming_job.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: ${DATABRICKS_HOST}
+    artifacts:
+      rent_airbnb_wheel:
+        path: ./dist
+
+  prod:
+    mode: production
+    workspace:
+      host: ${DATABRICKS_HOST}
+    artifacts:
+      rent_airbnb_wheel:
+        path: ./dist

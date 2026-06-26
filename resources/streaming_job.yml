@@ -1,0 +1,41 @@
+# Streaming job (L4)
+
+resources:
+  jobs:
+    rent_airbnb_streaming:
+      name: rent-airbnb-streaming-pipeline
+      description: Batch medallion baseline then stream rentals with live gold refresh.
+
+      tasks:
+        - task_key: batch_medallion
+          python_wheel_task:
+            package_name: rent_airbnb
+            entry_point: pipeline_job
+            parameters:
+              - "--airbnb-csv=${var.airbnb_csv}"
+              - "--rentals-json=${var.rentals_json}"
+              - "--post-codes-geojson=${var.post_codes_geojson}"
+              - "--output-base=${var.output_base}"
+          libraries:
+            - whl: ../dist/*.whl
+          new_cluster:
+            spark_version: "14.3.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
+
+        - task_key: streaming_rentals
+          depends_on:
+            - task_key: batch_medallion
+          python_wheel_task:
+            package_name: rent_airbnb
+            entry_point: streaming_job
+            parameters:
+              - "--output-base=${var.output_base}"
+              - "--post-codes-geojson=${var.post_codes_geojson}"
+              - "--terminate-after-ms=120000"
+          libraries:
+            - whl: ../dist/*.whl
+          new_cluster:
+            spark_version: "14.3.x-scala2.12"
+            node_type_id: "i3.xlarge"
+            num_workers: 1
