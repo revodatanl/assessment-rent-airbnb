@@ -4,91 +4,165 @@
 
 This project provides an opportunity to demonstrate your expertise in data engineering using a real-world dataset.
 
-Imagine yourself as a successful (and rich) data engineer seeking to reinvest your earnings in Amsterdam's property market for passive income. Your objective is to purchase houses and apartments, which you plan to lease either through long-term agreements on Kamernet or short-term listings on Airbnb.
+Imagine yourself as a successful (and rich) data engineer looking to reinvest your earnings in Amsterdam's property market for passive income. You are considering purchasing houses and apartments and renting them out either through long-term agreements on Kamernet or through short-term listings on Airbnb.
 
-As a skilled data engineer, you have already collected a dataset containing house locations and nightly prices from Airbnb and a second dataset from Kamernet.
+As a data engineer, you have access to two datasets (Airbnb and Kamernet) containing information about Amsterdam rental properties.
 
 ### Goal of the Assessment
 
-The aim is to identify postcodes with investment potential and determine whether renting properties long-term through Kamernet or via Airbnb would be more profitable.
+Use the available data to investigate the investment potential of Amsterdam's rental market.
+
+There is no single correct answer.
+
+We are primarily interested in how you explore the data, separate the signal from the noise, deal with imperfect information, and turn the data into something meaningful.
 
 ## Product Development
 
-If you are applying for a non-engineering position:
+If you are applying for a non-engineering position, use the problem as a starting point for developing a product or business proposition.
 
-- Create a conceptual design of how the implementation looks like (either components or process)
-- Create a business case
-- Create a roadmap with milestones how you would deliver this implementation with a team of engineers
-- Create a storyline based on the above input to convince the customer to invest
+You decide what is relevant, what to prioritize, and what to produce. Depending on your approach, you might consider:
+
+- The problem and its wider context
+- The people who might use the solution
+- Relevant data, information, or research
+- How the available information could be used
+- Potential product or business opportunities
+- Assumptions, constraints, and risks
+- Technical feasibility and implementation considerations
+- How you might prioritize different areas of work
+- How the solution could fit into existing processes
+- Stakeholder expectations and communication
+- Possible commercial or operational considerations
+- How you might measure success
+- Future opportunities or extensions
+- The time, resources, and skills required
+- How you would work with an engineering team
+- How you would communicate the value of the resulting solution
+
+Choose what you believe is appropriate and decide how much detail to provide.
 
 ## Engineering Deliverables
 
-If you are applying for an engineering role, you must at minimum build one or more data pipelines that:
+If you are applying for an engineering role, build a data product that provides useful insights into the investment potential of Amsterdam rental properties.
 
-- Ingest rental data scraped from Kamernet (`./data/rentals.json`)
-- Ingest data from Airbnb (`./data/airbnb.csv`)
-- Clean both datasets
-- Identify and address any missing or improper data by designing (and implementing if time permits) a backfill
-strategy
-- Calculate potential revenue per property and per postal code for both rental and Airbnb sources
-- Follow the principles of the [Medallion Architecture](https://www.databricks.com/glossary/medallion-architecture#:~:text=A%20medallion%20architecture%20is%20a%20data%20design%20pattern,%28from%20Bronze%20%E2%87%92%20Silver%20%E2%87%92%20Gold%20layer%20tables%29.)
+You are provided with two primary data sources. Use these sources to develop a solution that you believe provides a meaningful and reliable way of addressing the problem. Explain the reasoning behind your choices and, where relevant, the alternatives you considered.
 
-The following deliverables are expected as part of the project:
+### Working With the Data
 
-- Exploratory notebooks with data validation checks (placed in the `./scratch` folder)
-- Notebooks containing your pipeline implementation (located in the `./notebooks` folder)
-- Libraries or buildable packages for your pipeline (stored in `./src/<package_name>`)
-- Unit tests for your pipeline (included in the `./tests` folder)
-- Documentation for your pipeline (documented in the `README` and `./docs` folders) - **explain the why, not the how**
-- Export of datasets produced by your pipeline, formatted as Parquet files (placed in `./data/output`)
-- Pipeline job configurations (included in the `./resources` folder)
+Your solution might involve areas such as:
 
-We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](https://signup.databricks.com/) or [Databricks Free Edition](https://www.databricks.com/learn/free-edition). However, we are primarily interested in understanding how you work, so feel free to pick a tool with which you are most comfortable—whether it’s a local PySpark instance, or a cloud service. Explain your reasoning.
+- Visualization and presentation of insights
+- Data profiling and exploration
+- Reusability of data transformations
+- Data ingestion and source handling
+- Query and processing performance
+- Documentation of important assumptions and decisions
+- Data quality and validation
+- Data versioning and lineage
+- Data modeling and schema design
+- Reproducibility
+- Identifying patterns, trends, and anomalies
+- Pipeline design and orchestration
+- Feature engineering
+- Testing important transformations and analytical logic
+- Aggregation and derived metrics
+- Joining and reconciling different data sources
+- Analytical processing
+- Handling missing, duplicate, or inconsistent data
+- Scalability of data processing
+- Defining meaningful entities and relationships
+- Data cleaning and transformation
+- Handling uncertainty and incomplete information
 
-Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Declarative Automation Bundle Templates](https://github.com/revodatanl/revo-dabs). We expect you to spend 3-4 hours on the assessment, so apply your best judgment when prioritizing tasks.
+Some may be important to your solution. Others may not be.
 
-### Stretch Goals
+### Exploration and Development
 
-Following are a number of stretch goals of increasing difficulty that will give us an idea of how far you can go. We **do not expect** that you will be able to achieve all of these in the given time, so pick and choose whatever suits you best. It is preferable to focus on a complete and high-quality initial assessment rather than getting lost achieving these goals.
+We want to understand the reasoning behind your work, not just the final output.
 
-#### Level 1 / Engineer
+Help us understand:
 
-- [ ] Build a CI/CD pipeline that deploys your data pipeline
-- [ ] Run tests in your CI/CD pipeline
-- [ ] Use pre-commit hooks to ensure code quality
+- What you discovered about the data
+- What problems you encountered
+- Which decisions you made
+- What assumptions you introduced
+- How you handled unexpected or inconsistent data
+- What alternatives you considered
+- What you chose not to do
+- What you would do differently with more time
 
-#### Level 2 / Artist
+Explain the **why**, not just the **how**.
 
-- [ ] Build a visualization or dashboard displaying potential revenue per postcode (rental and Airbnb)
-- [ ] Create diagrams of the data flows and of your CI/CD pipeline
+Not every problem in the data needs to be fixed. A decision to reject, exclude, flag, transform, or leave data unchanged can all be reasonable depending on the circumstances.
 
-### BONUS
+## Recommended Resources
 
-#### Level 3 / Future-Proof
+### Databricks
 
-- [ ] Use Lakeflow Spark Declarative Pipelines (SDP) to build your pipelines
-- [ ] Use expectations (if using SDP) or another framework (if not), to ensure data quality
-- [ ] Deploy your pipeline using Declarative Automation Bundles
+We highly recommend using [Databricks](https://signup.databricks.com/) with a free trial for professional use through Express Setup, or use [Databricks Free Edition](https://www.databricks.com/learn/free-edition). However, we are primarily interested in understanding how you work. Feel free to use the tools and technologies you are most comfortable with, whether that is a local PySpark environment, a cloud service, or something else.
 
-#### Level 4 / over 9000
+### RevoData Templates
 
-- [ ] Load the data from `rentals.json` one record at a time with streaming ingestion
-- [ ] Update the gold layer table(s) in real time as new streaming data arrives
+We also recommend you use our [RevoData Declarative Automation Bundle Templates](https://github.com/revodatanl/revo-dabs).
 
-#### Level 5 / 10x Developer
+## Evidence
 
-- [ ] Use the `./data/geo/post_codes.geojson` geographic dataset to enrich the Airbnb data with missing postcodes
-- [ ] - or - Query an external API such as [public.opendatasoft.com](https://public.opendatasoft.com/explore/dataset/georef-netherlands-postcode-pc4/api/) to fill in the missing postcodes using a UDF
-- [ ] Use the `./data/geo/amsterdam_areas.geojson` geographic dataset for your visualization
+Your submission should contain enough evidence for us to understand and evaluate your approach.
+
+Depending on your solution, this might include:
+
+- Code
+- Exploratory analysis
+- Data quality checks
+- Tests
+- Data models
+- Queries
+- Visualizations
+- Diagrams
+- Analytical outputs
+- Pipeline definitions
+- Configuration
+- Documentation
+- Other artifacts you consider useful
+
+We do expect someone else to be able to understand what you built and reproduce the important parts of your work.
+
+## Prioritization
+
+- We expect you to spend approximately **3–4 hours** on the assessment.
+- You will have more possible things to investigate than you can reasonably complete within that time.
+- Use your best judgment to decide where your time creates the most value.
 
 ## Review
 
-Once you have completed this project, we will review it together. We are paying special attention to what you did or how you approached the pipeline logic and the challenges you addressed when issues arose. With the data provided, we expect some challenges, so we encourage creative workarounds and proactive measures.
+Once you have completed the project, we will review it together.
 
-As a note on using AI tools (ChatGPT, Copilot, etc.), we encourage you to use these tools to enhance your productivity. However, please remember that you are 100% responsible for the code you submit. You need to be able to explain how the code works and discuss the pros and cons of your implementations.
+We will pay particular attention to:
 
-We also require you to submit a (Markdown) export of the AI tool session conversation(s) that you conducted while completing this assignment, to better understand your working process.
+- How you approached the assessment
+- What you discovered
+- How you handled the data
+- The decisions you made
+- The assumptions behind your analysis
+- How you designed your code
+- The trade-offs you considered
+- How clearly you can explain your reasoning
 
-Please do **not** use AI assistants in any way during the interview. We want to assess your technical skills, problem-solving abilities, and communication skills. Additionally, we want to evaluate your ability to clearly and concisely explain your thoughts.
+### Working With AI
+
+You may use AI tools while completing the assessment. We encourage you to use tools that improve your productivity. However, you remain fully responsible for everything you submit.
+
+During the interview, AI assistants may not be used.
+
+We want to assess your technical skills, problem-solving abilities, and communication skills, including your ability to clearly and concisely explain your thinking.
+
+**Using AI is allowed and even encouraged. Outsourcing your thinking is not.**
+
+## Submission
+
+- Save your work in a private Git repository and share it with us.
+- Please include a Markdown export of the AI-assisted conversations you used while completing the assessment.
+
+Make sure the repository contains everything necessary for us to understand, run, and review your work.
 
 **Good luck, and see you on the other side!**
