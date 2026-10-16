@@ -43,7 +43,11 @@ The following deliverables are expected as part of the project:
 - Export of datasets produced by your pipeline, formatted as Parquet files (placed in `./data/output`)
 - Pipeline job configurations (included in the `./resources` folder)
 
-We highly recommend using Databricks, you can set up a [free trial for professional use following Express Setup](https://signup.databricks.com/) or [Databricks Free Edition](https://www.databricks.com/learn/free-edition). However, we are primarily interested in understanding how you work, so feel free to pick a tool with which you are most comfortable—whether it’s a local PySpark instance, or a cloud service. Explain your reasoning.
+Please prioritise completing the minimum requirements listed above before attempting any stretch goals
+
+### Additional guidance for Technical Instructor applicants
+
+We don't expect the same level of engineering depth or polish as we would from a dedicated Data Engineer, but you should demonstrate a solid technical foundation, a working understanding of data pipelines, and the ability to explain your implementation choices and reasoning. Focus on delivering a complete, understandable solution that addresses the core business question rather than spending time on optional extras.
 
 Save everything in a private Git repository and share it with us. Deliver a clean repository: remove any redundant files, replace our README with your own, and provide clear instructions for building and running your project. If unsure how to structure your repository, we recommend starting with our [RevoData Declarative Automation Bundle Templates](https://github.com/revodatanl/revo-dabs). We expect you to spend 3-4 hours on the assessment, so apply your best judgment when prioritizing tasks.
 
