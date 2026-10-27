@@ -43,7 +43,8 @@ The following deliverables are expected as part of the project:
 - Export of datasets produced by your pipeline, formatted as Parquet files (placed in `./data/output`)
 - Pipeline job configurations (included in the `./resources` folder)
 
-Please prioritise completing the minimum requirements listed above before attempting any stretch goals
+We strongly recommend using Databricks. You can set up a [free trial for professional use following Express Setup](https://signup.databricks.com/) or [Databricks Free Edition](https://www.databricks.com/learn/free-edition). If you have a strong reason to use another tool, such as a local PySpark instance or a cloud service, you may do so, but please explain your reasoning.
+Please prioritise completing the minimum requirements listed above before attempting any stretch goals.
 
 ### Additional guidance for Technical Instructor applicants
 
